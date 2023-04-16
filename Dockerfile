@@ -1,6 +1,5 @@
 FROM python:3-slim
 
-
 # Install mopidy
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo gpg wget \
@@ -28,19 +27,26 @@ RUN apt-get update \
     pyopenssl \
   # Cleanup
   && pip cache purge \
-  && apt-get purge --auto-remove -y \
-    gcc \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache \
+  # Prepare runtime paths
+  && mkdir -p /config \
+  && chown -R mopidy:audio /config
+
 
 # Switch to user mopidy with group audio.
 USER mopidy:audio
+
+# Create configuration
+VOLUME ["/config"]
+RUN cp /etc/mopidy/mopidy.conf /config/mopidy.conf
 
 # Expose Ports
 EXPOSE 6600 6680 5555/udp
 
 # Run start script
-CMD ["/usr/bin/mopidy"]
+ENTRYPOINT ["/usr/bin/mopidy"]
+CMD ["--config", "/config/mopidy.conf"]
 
 HEALTHCHECK --interval=5s --timeout=2s --retries=20 \
     CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
