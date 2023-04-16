@@ -6,12 +6,12 @@ on:
   # Create weekly build
   schedule:
     - cron: '0 3 * * 6'
-  # push:
-  #   branches: [ "main" ]
-  #   # Publish semver tags as releases.
-  #   tags: [ 'v*.*.*' ]
-  # pull_request:
-  #   branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+    # Publish semver tags as releases.
+    #tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ "main" ]
 
 env:
   REGISTRY: ghcr.io
@@ -73,7 +73,7 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           #tags: ${{ steps.meta.outputs.tags }}
-          tags: latest
+          tags: ${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
