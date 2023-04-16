@@ -1,6 +1,6 @@
 # docker-mopidy
 Very simple docker image for extensible music server [Mopidy](https://mopidy.com).  
-The image is based on python3/debian-slim and installs Mopidy, together with the below listed extensions, according to the [official documentation](https://docs.mopidy.com/en/release-2.2/installation/debian).  
+The image is based on `debian-slim` and installs Mopidy, together with the below listed extensions, according to the [official documentation](https://docs.mopidy.com/en/release-2.2/installation/debian).  
   
 Using a GitHub workflow, the image is created and published weekly.
 

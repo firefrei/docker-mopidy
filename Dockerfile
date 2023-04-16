@@ -1,23 +1,25 @@
-FROM python:3-slim
+FROM debian:stable-slim
 
-# Install mopidy
 RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo gpg wget \
-  && sudo mkdir -p /etc/apt/keyrings \
-  && sudo wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg \
-  && sudo wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y gpg wget \
+  && mkdir -p /etc/apt/keyrings \
+  && wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg \
+  && wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list \
   && apt-get update \
+  # Install mopidy core
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    python3-pip \
     mopidy \
     mopidy-spotify \
     mopidy-soundcloud \
     mopidy-mpd \
     mopidy-local \
-  && pip install -U \
-  # Mopidy WebUI extensions
+  # Install mopidy "pip-extensions"
+  && python3 -m pip install \
+    # Mopidy web client extensions
     Mopidy-Iris \
     Mopidy-Moped \
-  # Mopidy music source extensions
+    # Mopidy music source extensions
     Mopidy-GMusic \
     Mopidy-Pandora \
     Mopidy-RadioNet \
@@ -26,7 +28,7 @@ RUN apt-get update \
     youtube-dl \
     pyopenssl \
   # Cleanup
-  && pip cache purge \
+  && python3 -m pip cache purge \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache \
   # Prepare runtime paths
