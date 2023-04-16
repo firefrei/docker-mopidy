@@ -1,7 +1,9 @@
 FROM debian:stable-slim
 
+ENV TZ "Etc/UTC"
+
 RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y gpg wget \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata gpg wget \
   && mkdir -p /etc/apt/keyrings \
   && wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg \
   && wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list \
