@@ -16,6 +16,8 @@ RUN apt-get update \
     mopidy-soundcloud \
     mopidy-mpd \
     mopidy-local \
+    # Healtcheck tools
+    curl \
   # Install mopidy "pip-extensions"
   && python3 -m pip install \
     # Mopidy web client extensions
