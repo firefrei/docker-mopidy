@@ -31,6 +31,8 @@ RUN apt-get update \
     Mopidy-YouTube \
     youtube-dl \
     pyopenssl \
+    # Avoid "externally-managed-environment" error and allow parallel installation using apt+pip
+    --break-system-packages \
   # Cleanup
   && python3 -m pip cache purge \
   && apt-get clean \
